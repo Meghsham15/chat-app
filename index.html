@@ -9,7 +9,7 @@
 
 <body>
     <div id="app">
-        <div id="chat" style="display: none;">
+        <!-- <div id="chat" style="display: none;">
             <nav>
                 <img class="logo" src="mjlogo.png" alt="">
             </nav>
@@ -33,12 +33,15 @@
             </nav>
             <input type="text" id="name" placeholder="Enter your name">
             <button onclick="enterChat()">Enter</button>
-        </div>
+        </div> -->
     </div>
-    
 
+
+    <!-- Include EmojiButton.js library -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.1/socket.io.js"></script>
-    <script  src="js/script.js"></script>
+    <script type="module" src="js/htmlObj.js"></script>
+    <script type="module" src="js/script.js"></script>
 </body>
 
 </html>
