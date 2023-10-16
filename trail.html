@@ -1,12 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image to URL Converter</title>
+    <link rel="stylesheet" href="css/styleNew.css">
 </head>
+
 <body>
-    <input type="file" id="imageInput" accept="image/*">
+    <div id="imgContainer" class="imgContainer">
+        <img src="" alt="" id="previewImg">
+        <button id="imgSend">Send</button>
+    </div>
+
+    <div id="chat">
+        <nav>
+            <img class="logo" src="mjlogo.png" alt="">
+        </nav>
+
+        <div class="container">
+            <div class="message right"><img src="" alt="">
+                <p>name</p>
+            </div>
+        </div>
+        <div class="send">
+            <form action='#' id="send-container">
+                <p id="emojiButton">😀</p>
+                <input type="text" id="messageInput" name="messageInput">
+                <emoji-picker class="displayNone" id="emoji-picker-button"></emoji-picker>
+                <label class="inputs-label" id="fileInputLabel" for="fileInput">📁</label>
+                <input type="file" id="fileInput" hidden>
+                <label class="inputs-label" id="imageInputLabel" for="imageInput">📷</label>
+                <input type="file" id="imageInput" accept="image/*" hidden>
+                <button type='submit' id="submit" class="btn">Send</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // JavaScript code to add an image preview when a user selects an image
+
+        // Get references to HTML elements
+        const imageInput = document.getElementById('imageInput');
+        const previewImg = document.getElementById('previewImg');
+        let imgContainer = document.getElementById('imgContainer');
+        let imgSend = document.getElementById('imgSend');
+        let chatContainer = document.querySelector('.container');
+        let dataUrl;
+
+        // Listen for changes in the file input
+        imageInput.addEventListener('change', function () {
+            const file = imageInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    dataUrl = e.target.result;
+                    previewImg.src = e.target.result;
+                    imgContainer.style.display = 'flex'
+                    imgContainer.style.zIndex = '1';
+                    chatContainer.classList.add('blur');
+                    const img = new Image();
+                    img.src = e.target.result;
+
+                    img.onload = function () {
+                        let width = img.width;
+                        let height = img.height;
+                        let quality = 0.7; // Initial quality value (adjust as needed)
+
+                        // Resize and compress the image iteratively until it meets the target size
+                        const compressAndResize = () => {
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+
+                            // Convert the canvas content to a data URL with the current quality setting
+                            const resizedImageData = canvas.toDataURL('image/jpeg', quality);
+
+                            // Calculate the size of the data URL in bytes
+                            const sizeInBytes = resizedImageData.length * 0.75;
+
+                            if (sizeInBytes > targetSizeInBytes && quality > 0.1) {
+                                // If the current size exceeds the target size and quality is still acceptable, reduce quality and resize again
+                                quality -= 0.1;
+                                compressAndResize();
+                            } else {
+                                dataUrl = resizedImageData;
+                                // The image meets the target size or quality has reached its minimum acceptable value
+                                // Use the resizedImageData as needed (e.g., send it to the server or display it)
+                                console.log('Resized and Compressed Image Data URL:', resizedImageData);
+                            }
+                        };
+
+                        compressAndResize();
+                    };
+                };
+
+                reader.readAsDataURL(file);
+            };
+
+        }
+        );
+
+        imgSend.addEventListener('click', function (e) {
+            console.log('clicked' + dataUrl);
+            let messageEle = document.createElement('div');
+            let nameEle = document.createElement('p');
+            let imgEle = document.createElement('img');
+            nameEle.innerText = 'user' + ' - ' + 'time';
+            imgEle.setAttribute('src', dataUrl);
+            messageEle.append(imgEle);
+            messageEle.append(nameEle);
+            messageEle.classList.add('message')
+            messageEle.classList.add('right');
+            chatContainer.append(messageEle);
+            imgContainer.style.display = 'none'
+            imgContainer.style.zIndex = '-1'
+            chatContainer.classList.remove('blur')
+        });
+
+
+
+
+    </script>
+    <!-- <label class="inputs-label" id="imageInput" for="fileInput">📷</label>
+    <input type="file" id="imageInput" accept="*">
     <img id="imagePreview" src="" alt="Preview">
     <button id="convertButton">Convert to URL</button>
     <textarea id="imageUrl" rows="4" cols="50" placeholder="Image URL will appear here"></textarea>
@@ -18,7 +138,7 @@
         const imageUrl = document.getElementById('imageUrl');
 
         // Add an event listener to the file input
-        imageInput.addEventListener('change', function () {
+        imageInput.addEventListener('onchange', function () {
             const file = imageInput.files[0];
 
             // Display the selected image
@@ -45,6 +165,8 @@
                 alert('Please select an image first.');
             }
         });
-    </script>
+    </script> -->
+
 </body>
+
 </html>

@@ -20,12 +20,12 @@ app.get('/trail', function (req, res) {
     res.sendFile(__dirname + '/trail.html');
 });
 
-function getUser(users,socketId){
-    let user ;
+function getUser(users, socketId) {
+    let user;
     users.forEach((ele) => {
         if (ele.id === socketId) {
             // console.log(ele);
-            user =  ele;
+            user = ele;
         }
     });
     return user;
@@ -87,7 +87,7 @@ io.on('connection', (socket) => {
 
 
     socket.on('send', (message) => {
-        let user = getUser(users,socket.id);
+        let user = getUser(users, socket.id);
         // users.forEach((ele) => {
         //     if (ele.id === socket.id) {
         //         // console.log(ele);
@@ -99,8 +99,16 @@ io.on('connection', (socket) => {
         socket.broadcast.to(user.room).emit('message', { users: users, position: 'left', message: message, name: user[socket.id] })
     })
 
+    socket.on('send-img', (message) => {
+        let user = getUser(users, socket.id);
+
+        // console.log(user);
+        socket.broadcast.to(user.room).emit('image-display', { users: users, position: 'left', message: message, name: user[socket.id] })
+        // console.log('img server');
+    })
+
     socket.on('displayUsers', (message) => {
-        let user = getUser(users,socket.id);
+        let user = getUser(users, socket.id);
         // users.forEach((ele) => {
         //     if (ele.id === socket.id) {
         //         // console.log(ele);

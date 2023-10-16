@@ -9,6 +9,15 @@
     font-family: 'Open Sans', sans-serif;
 }
 
+.blur{
+    filter: blur(6px);
+}
+
+.displayNone{
+    display: none;
+    /* z-index: 1; */
+}
+
 .logo {
     display: block;
     margin: auto;
@@ -48,6 +57,10 @@ body {
     border-radius: 10px;
     clear: both; /* Clear float to prevent wrapping issues */
     font-family: 'Poppins', sans-serif;
+}
+
+.message img{
+    width: 100%;
 }
 
 .left {
@@ -107,9 +120,49 @@ body {
     cursor: pointer;
 }
 
-.displayNone{
+/* #previewImg {
+    width: 63vw;
+    height: 61vh;
+    position: fixed;
+    top: 7%;
+    object-fit: contain;
+    left: 18.5%;
+    z-index: -1;
+} */
+
+.imgContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: -1;
+    height: 100vh;
     display: none;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
 }
+
+#imgContainer img {
+    height: 65%;
+    width: 65%;
+    object-fit: contain;
+}
+
+#imgSend{
+    padding: 5px 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+
+
+.inputs-label{
+    cursor: pointer;
+    font-size: 25px;
+    margin: 0px 5px;
+}
+
 
 #emoji-picker-button{
     border: none;
