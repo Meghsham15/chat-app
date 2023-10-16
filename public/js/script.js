@@ -179,6 +179,8 @@ function enterChat() {
         imgContainer.style.zIndex = '-1';
         chat.classList.remove('blur');
         socket.emit('send-img',dataUrl);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
             
     });
 
