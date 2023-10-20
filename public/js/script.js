@@ -223,6 +223,17 @@ socket.on('image-display', (data) => {
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
 
+window.addEventListener('beforeunload', function (e) {
+    // Display a confirmation message when the user tries to reload the page
+    e.preventDefault();
+    e.returnValue = 'All the chats will be deleted once reloaded'; // This is for legacy browsers
+ // For modern browsers
+});
+
+// Optionally, you can remove the event listener to allow reloading when needed
+// window.removeEventListener('beforeunload', yourFunctionName);
+
+
 
 // socket.on('user-joined', (name) => {
 //     append(`${name} Joined the chat  - ${getCurrentTime()}`, null, 'center');

@@ -4,10 +4,9 @@ var express = require("express");
 var app = express(); // express app which is used boilerplate for HTTP
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
-const cors = require('cors');
 const users = [];
 const usersObj = {};
-app.use(express.static(__dirname + '/public'));
+app.use(express.static('public'));
 
 
 // app.get('/land',function(req,res){
@@ -61,6 +60,33 @@ function getCurrentTime() {
 // };
 
 // io.use(cors(corsOptions));
+
+// class objectStore {
+//     constructor() {
+//         this.objArr;
+//     }
+
+//     addObj(obj) {
+//         this.objArr.push(obj);
+//         return 'obj added';
+//     }
+
+//     removeObj(obj) {
+//         const index = this.objArr.indexOf(obj);
+//         if (index !== -1) {
+//             array.splice(index, 1);
+//             console.log('obj deleted');
+//         }
+//         return 'obj deleted';
+//     }
+
+//     getAll(){
+//         return this.objArr;
+//     }
+
+// }
+
+
 io.on('connection', (socket) => {
     socket.on('new-user-joined', (req) => {
         // console.log("name- " + name);
@@ -127,7 +153,7 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
         if (users.length !== 0) {
-            let user = getUser(users,socket.id);
+            let user = getUser(users, socket.id);
             // users.forEach((ele) => {
             //     if (ele.id === socket.id) {
             //         // console.log(ele);
@@ -135,6 +161,13 @@ io.on('connection', (socket) => {
             //     }
             // })
             // console.log('disconnected' + user[socket.id]);
+            const index = users.indexOf(user);
+            if (index !== -1) {
+                users.splice(index, 1);
+            }
+            if (usersObj.hasOwnProperty(socket.id)) {
+                delete usersObj[socket.id];
+            }
             io.to(user.room).emit('message', { users: users, position: 'center', message: "User disconnected - " + user[socket.id], name: null });
         }
     })
