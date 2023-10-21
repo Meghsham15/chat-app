@@ -26,8 +26,9 @@
 
 #app {
     width: 100%;
-    height: 100vh;
+    height: 95vh;
     display: flex;
+    overflow-y: scroll;
     justify-content: center;
 }
 
@@ -83,19 +84,75 @@ body {
     height: 90%;
 }
 
-.message {
-    background-color: #f2f2f2; /* Light gray background for messages */
-    width: 45%; /* Adjust the width for better readability */
-    padding: 10px;
-    margin: 10px 0;
+body {
+    font-family: Arial, sans-serif;
+}
+
+#fileInput {
+    /* Add some basic styling here */
+    border: 2px solid #0077FF;
+    padding: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.file-card {
+    width: auto;
+    max-width: 80%;
+    /* display: none; */
+    background-color: #f5f5f5;
     border: 1px solid #ccc;
-    border-radius: 10px;
-    clear: both; /* Clear float to prevent wrapping issues */
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.file-name {
+    margin-right: 8px;
+    flex-grow: 1;
+}
+
+#downloadButton {
+    font-size: 25px;
+    margin-right: 10px;
+    /* padding: 6px; */
+    background-color: #0077FF;
+    color: #FFF;
+    padding: 5px 16px;
+    border-radius: 25px;
+    text-decoration: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+#downloadButton:hover {
+    background-color: #0055CC;
+}
+
+.download-icon {
+    margin-right: 8px;
+}
+
+.message {
+    background-color: #f2f2f2;
+    width: auto;
+    max-width: 85%;
+    padding: 5px 12px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    clear: both;
     font-family: 'Poppins', sans-serif;
 }
 
-.message img{
+.message img {
     width: 100%;
+    max-height: 300px;
+}
+.message p{
+    font-size: 12px;
 }
 
 .left {
@@ -119,10 +176,11 @@ body {
 .center {
     /* background-color: #e5e5e5; */
     margin: 5px auto;
+    justify-content: center;
     text-align: center;
     clear: both;
     padding: 2px 10px;
-    width: 30%;
+    /* width: 30%; */
     background: none;
     font-size: 12px;
     border: none;
@@ -234,7 +292,7 @@ body {
     padding: 0;
     background-color: #f0f0f0;
     display: flex;
-    align-items: center;
+    /* align-items: center; */
     justify-content: center;
     min-height: 100vh;
 }
@@ -280,3 +338,4 @@ nav {
 #landing div button:hover {
     background-color: #2374a7;
 }
+

@@ -4,6 +4,7 @@
 import { myFunction } from "./htmlObj.js";
 let app = document.getElementById('app');
 app.innerHTML = myFunction().landing;
+const audio = new Audio('sound/Notification.mp3');
 
 const socket = io(); // Initialize Socket.io
 // let socket ; // Initialize Socket.io
@@ -13,6 +14,10 @@ let form;
 let messageInput ;
 let submitButton;
 let emojiPickerButton;
+let fileInput ;
+// let fileCard ;
+let fileLabel ;
+let downloadButton;
 enterChatButton.addEventListener('click',function(){
     enterChat();
 });
@@ -35,6 +40,27 @@ function append(message, user, position) {
         messageEle.classList.add(position);
         chatContainer.append(messageEle);
     }
+};
+
+function appendFile(name, url, user, position) {
+    let fileCard = document.createElement('div');
+    let fileName = document.createElement('span');
+    let downloadBtn = document.createElement('a');
+    let nameEle = document.createElement('p');
+    nameEle.innerText = user + ' - ' + 'time';
+    fileCard.classList.add('file-card');
+    fileCard.classList.add(position);
+    fileName.classList.add('file-name');
+    downloadBtn.classList.add('download-button');
+    fileName.innerText = name;
+    downloadBtn.innerText = '⭳';
+    downloadBtn.setAttribute('href', url);
+    downloadBtn.setAttribute('download', name);
+    downloadBtn.setAttribute('id', 'downloadButton');
+    fileCard.append(fileName);
+    fileCard.append(downloadBtn);
+    fileCard.append(nameEle);
+    chatContainer.append(fileCard);
 };
 
 function appendImg(url,user,position){
@@ -66,12 +92,43 @@ function enterChat() {
     chatContainer = document.querySelector('.container');
     let emojiBox =  document.querySelector('emoji-picker');
     let previewImg = document.getElementById('previewImg');
-
+    fileInput = document.getElementById('fileInput');
+    // fileCard = document.getElementById('fileCard');
+    fileLabel = document.getElementById('fileLabel');
+    downloadButton = document.getElementById('downloadButton');
 
     // Scroll to the bottom with smooth animation
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 
+    
+    fileInput.addEventListener('change', async(e) => {
+        const formData = new FormData();
+        const fileInputs = document.querySelectorAll('.fileInput');
+        for (const input of fileInputs) {
+            Array.from(input.files).forEach((file) => {
+                formData.append('files', file);
+            });
+        }
+
+        const response = await fetch('/upload', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+        console.log(formData);
+        // const responseDiv = document.getElementById('response');
+        // responseDiv.innerHTML = '';
+
+        data.forEach((fileData, index) => {
+            // const downloadLink = document.createElement('a');
+            let url = `/uploads/${fileData.filename}`;
+            let fileName = fileData.originalname;
+            appendFile(fileName,url,'You','right');
+            socket.emit('file',{fileName:fileName,url:url});
+        });
+    });
 
     messageInput.addEventListener('click',function(){
         emojiBox.classList.add('displayNone');
@@ -213,22 +270,31 @@ function getCurrentTime() {
 
 socket.on('message', (data) => {
     append(data.message, data.name ,data.position)
+    audio.play();
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+});
+
+socket.on('addFile', (data) => {
+    appendFile(data.fileName,data.url,data.name,data.position);
+    audio.play();
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
 
 socket.on('image-display', (data) => {
     appendImg(data.message, data.name ,data.position);
+    audio.play();
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
 
-window.addEventListener('beforeunload', function (e) {
-    // Display a confirmation message when the user tries to reload the page
-    e.preventDefault();
-    e.returnValue = 'All the chats will be deleted once reloaded'; // This is for legacy browsers
- // For modern browsers
-});
+// window.addEventListener('beforeunload', function (e) {
+//     // Display a confirmation message when the user tries to reload the page
+//     e.preventDefault();
+//     e.returnValue = 'All the chats will be deleted once reloaded'; // This is for legacy browsers
+//  // For modern browsers
+// });
 
 // Optionally, you can remove the event listener to allow reloading when needed
 // window.removeEventListener('beforeunload', yourFunctionName);

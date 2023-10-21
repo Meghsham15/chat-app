@@ -1,3 +1,15 @@
-body{
-    background: red;
+ 
+#emojiButton{
+    display: none;
+}
+
+.message {
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 16px;
+    width: auto;
+    max-width: 85%;
+}
+.center{
+    font-size: 16px;
 }

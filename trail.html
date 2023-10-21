@@ -3,100 +3,106 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image to URL Converter</title>
+    <title>Download File Example</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="css/styleNew.css">
-    <link rel="stylesheet" media="screen and (max-width: 582px)" href="/css/phone.css">
+    <link rel="stylesheet" media="screen and (max-width: 582px)" href="css/phone.css">
+    <style>
+
+    </style>
 </head>
 
 <body>
-    <div id="imgContainer" class="imgContainer">
-        <img src="" alt="" id="previewImg">
-        <button id="imgSend">Send</button>
-    </div>
-
     <div id="chat">
         <nav>
-            <img class="logo" src="mjlogo.png" alt="">
+            <img class="logo" src="img/mjlogo.png" alt="">
         </nav>
 
         <div class="container">
-            <div class="message right">Hello world how are you iam mj<img src="" alt="">
-                <p>name</p>
-            </div>
+            <!-- <div class="file-card" id="fileCard">
+                <span class="file-name" id="fileLabel">File Name</span>
+                <a href="#" id="downloadButton" class="download-button">
+                    ⭳
+                </a>
+            </div> -->
         </div>
         <div class="send">
             <form action='#' id="send-container">
                 <p id="emojiButton">😀</p>
-                <input type="text" id="messageInput" name="messageInput">
+                <input type="text" id="messageInput" autocomplete="off" name="messageInput">
                 <emoji-picker class="displayNone" id="emoji-picker-button"></emoji-picker>
                 <label class="inputs-label" id="fileInputLabel" for="fileInput">📁</label>
-                <input type="file" id="fileInput" hidden>
+                <input type="file" accept="*" id="fileInput" class="fileInput" multiple hidden>
                 <label class="inputs-label" id="imageInputLabel" for="imageInput">📷</label>
                 <input type="file" id="imageInput" accept="image/*" hidden>
                 <button type='submit' id="submit" class="btn">➡️</button>
             </form>
         </div>
     </div>
-    <script>
-    let  emojiPickerButton = document.getElementById('emojiButton');
-    let emojiBox =  document.querySelector('emoji-picker');
-       
-    emojiPickerButton.addEventListener('click',function(){
-        emojiBox.classList.toggle('displayNone');
-    })
-
-    emojiBox.addEventListener('emoji-click', event =>{
-        let emoji = event.detail.unicode;
-         console.log(event.detail.unicode);
-        messageInput.value+=emoji;
-
-    });
-
-
-    </script>
-    <!-- <label class="inputs-label" id="imageInput" for="fileInput">📷</label>
-    <input type="file" id="imageInput" accept="*">
-    <img id="imagePreview" src="" alt="Preview">
-    <button id="convertButton">Convert to URL</button>
-    <textarea id="imageUrl" rows="4" cols="50" placeholder="Image URL will appear here"></textarea>
+    <!-- <input type="file" id="fileInput"> -->
+    <!-- <div class="file-card" id="fileCard">
+        <span class="file-name" id="fileLabel">File Name</span>
+        <a href="#" id="downloadButton" class="download-button">
+            <i class="fas fa-arrow-down download-icon"></i> Download
+        </a>
+    </div> -->
 
     <script>
-        const imageInput = document.getElementById('imageInput');
-        const imagePreview = document.getElementById('imagePreview');
-        const convertButton = document.getElementById('convertButton');
-        const imageUrl = document.getElementById('imageUrl');
+        const fileInput = document.getElementById('fileInput');
+        // const fileCard = document.getElementById('fileCard');
+        const fileLabel = document.getElementById('fileLabel');
+        const downloadButton = document.getElementById('downloadButton');
+        let chatContainer = document.querySelector('.container');
 
-        // Add an event listener to the file input
-        imageInput.addEventListener('onchange', function () {
-            const file = imageInput.files[0];
+        function appendFile(name, url, user, position) {
+            let fileCard = document.createElement('div');
+            let fileName = document.createElement('span');
+            let downloadBtn = document.createElement('a');
+            let nameEle = document.createElement('p');
+            nameEle.innerText = user + ' - ' + 'time';
+            fileCard.classList.add('file-card');
+            fileCard.classList.add(position);
+            fileName.classList.add('file-name');
+            downloadBtn.classList.add('download-button');
+            fileName.innerText = name;
+            downloadBtn.innerText = '⭳';
+            downloadBtn.setAttribute('href', url);
+            downloadBtn.setAttribute('download', name);
+            downloadBtn.setAttribute('id', 'downloadButton');
+            fileCard.append(fileName);
+            fileCard.append(downloadBtn);
+            fileCard.append(nameEle);
+            chatContainer.append(fileCard);
+        }
 
-            // Display the selected image
-            const reader = new FileReader();
-            reader.onload = function () {
-                imagePreview.src = reader.result;
-            };
-            reader.readAsDataURL(file);
-        });
-
-        // Add an event listener to the convert button
-        convertButton.addEventListener('click', function () {
-            const file = imageInput.files[0];
-
-            if (file) {
-                // Convert the image to a data URL
-                const reader = new FileReader();
-                reader.onload = function () {
-                    const dataUrl = reader.result;
-                    imageUrl.value = dataUrl;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                alert('Please select an image first.');
+        fileInput.addEventListener('change', async(e) => {
+            const formData = new FormData();
+            const fileInputs = document.querySelectorAll('.fileInput');
+            for (const input of fileInputs) {
+                Array.from(input.files).forEach((file) => {
+                    formData.append('files', file);
+                });
             }
-        });
-    </script> -->
 
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            // console.log(data);
+            // const responseDiv = document.getElementById('response');
+            // responseDiv.innerHTML = '';
+
+            data.forEach((fileData, index) => {
+                // const downloadLink = document.createElement('a');
+                let url = `/uploads/${fileData.filename}`;
+                let fileName = fileData.originalname;
+                console.log(url);
+                appendFile(fileName,url,'trail','right');
+            });
+        });
+    </script>
 </body>
 
 </html>

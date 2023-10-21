@@ -1,12 +1,28 @@
 // const io = require('socket.io')(8000);
 var PORT = process.env.PORT || 3000; // take port from heroku or for loacalhost
 var express = require("express");
+const multer = require('multer');
+const path = require('path');
 var app = express(); // express app which is used boilerplate for HTTP
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
 const users = [];
 const usersObj = {};
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'temp_uploads/');
+    },
+    filename: (req, file, cb) => {
+        const extname = path.extname(file.originalname);
+        cb(null, file.fieldname + '-' + Date.now() + extname);
+    }
+});
+
+const upload = multer({ storage: storage });
+app.use('/uploads', express.static('temp_uploads'));
 app.use(express.static('public'));
+app.use(express.json());
 
 
 // app.get('/land',function(req,res){
@@ -15,6 +31,24 @@ app.use(express.static('public'));
 app.get('/', function (req, res) {
     res.sendFile(__dirname + '/index.html');
 });
+
+app.post('/upload', upload.array('files', 5), (req, res) => {
+    // Handle the uploaded files here
+    const files = req.files; // An array of uploaded files
+
+    // Respond with information about the uploaded files
+    const response = files.map((file) => {
+        return {
+            filename: file.filename,
+            originalname: file.originalname,
+            mimetype: file.mimetype,
+            size: file.size,
+        };
+    });
+
+    res.json(response);
+});
+
 app.get('/trail', function (req, res) {
     res.sendFile(__dirname + '/trail.html');
 });
@@ -132,6 +166,14 @@ io.on('connection', (socket) => {
         socket.broadcast.to(user.room).emit('image-display', { users: users, position: 'left', message: message, name: user[socket.id] })
         // console.log('img server');
     })
+
+    socket.on('file', (message) => {
+        let user = getUser(users, socket.id);
+
+        // console.log(user);
+        socket.broadcast.to(user.room).emit('addFile', { users: users, position: 'left', fileName: message.fileName,url:message.url, name: user[socket.id] })
+        // console.log('img server');
+    });
 
     socket.on('displayUsers', (message) => {
         let user = getUser(users, socket.id);
