@@ -3,6 +3,7 @@ var PORT = process.env.PORT || 3000; // take port from heroku or for loacalhost
 var express = require("express");
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 var app = express(); // express app which is used boilerplate for HTTP
 var http = require("http").Server(app);
 var io = require("socket.io")(http);
@@ -47,6 +48,26 @@ app.post('/upload', upload.array('files', 5), (req, res) => {
     });
 
     res.json(response);
+});
+const tempUploadPath = path.join(__dirname, 'temp_uploads');
+app.get('/deleteAll', (req, res) => {
+    fs.readdir(tempUploadPath, (err, files) => {
+        if (err) {
+            res.send('Error reading the directory: ' + err);
+            return;
+        }
+
+        files.forEach((file) => {
+            const filePath = path.join(tempUploadPath, file);
+            fs.unlink(filePath, (err) => {
+                if (err) {
+                    console.log('Error deleting file:', err);
+                }
+            });
+        });
+
+        res.send('All files deleted successfully.');
+    });
 });
 
 app.get('/trail', function (req, res) {
@@ -211,6 +232,23 @@ io.on('connection', (socket) => {
                 delete usersObj[socket.id];
             }
             io.to(user.room).emit('message', { users: users, position: 'center', message: "User disconnected - " + user[socket.id], name: null });
+        }
+    });
+
+    socket.on('typing', () => {
+        if (users.length !== 0) {
+            let user = getUser(users, socket.id);
+            // users.forEach((ele) => {
+            //     if (ele.id === socket.id) {
+            //         // console.log(ele);
+            //         user = ele;
+            //     }
+            // })
+            // console.log('disconnected' + user[socket.id]);
+            
+            // io.to(user.room).emit('userTyping', { users: users, position: 'center', message: "User disconnected - " + user[socket.id], name: null });
+
+            socket.broadcast.to(user.room).emit('userTyping', { users: users, name: user[socket.id] })
         }
     })
 

@@ -26,7 +26,7 @@ export const myFunction = () => {
         </nav>
 
         <div class="container">
-            
+        <article class="typing-indicator">user </article>
         </div>
         <div class="send">
             <form action='#' id="send-container">

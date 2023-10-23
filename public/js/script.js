@@ -5,6 +5,7 @@ import { myFunction } from "./htmlObj.js";
 let app = document.getElementById('app');
 app.innerHTML = myFunction().landing;
 const audio = new Audio('sound/Notification.mp3');
+const typeAudio = new Audio('sound/typing.mp3');
 
 const socket = io(); // Initialize Socket.io
 // let socket ; // Initialize Socket.io
@@ -15,6 +16,7 @@ let messageInput ;
 let submitButton;
 let emojiPickerButton;
 let fileInput ;
+let typingIndicator;
 // let fileCard ;
 let fileLabel ;
 let downloadButton;
@@ -47,7 +49,7 @@ function appendFile(name, url, user, position) {
     let fileName = document.createElement('span');
     let downloadBtn = document.createElement('a');
     let nameEle = document.createElement('p');
-    nameEle.innerText = user + ' - ' + 'time';
+    nameEle.innerText = user + ' - ' + getCurrentTime();
     fileCard.classList.add('file-card');
     fileCard.classList.add(position);
     fileName.classList.add('file-name');
@@ -83,6 +85,7 @@ function enterChat() {
         name : name,
         room:roomId
     }
+
     socket.emit('new-user-joined', data);
     app.innerHTML = myFunction().chat;
     form = document.getElementById('send-container');
@@ -96,10 +99,26 @@ function enterChat() {
     // fileCard = document.getElementById('fileCard');
     fileLabel = document.getElementById('fileLabel');
     downloadButton = document.getElementById('downloadButton');
+    typingIndicator  = document.querySelector('.typing-indicator');
 
     // Scroll to the bottom with smooth animation
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    // console.log();
+     // ****************
+     typingIndicator.classList.add('visibleNot');
+
+     document.getElementById('messageInput').addEventListener('input',(e)=>{
+        socket.emit('typing');
+        
+     });
+
+     
+     // $$$$$$$$
+
+    // messageInput.addEventListener('input',(e)=>{
+    //     console.log(e.target.value);
+    // })
 
     
     fileInput.addEventListener('change', async(e) => {
@@ -288,6 +307,77 @@ socket.on('image-display', (data) => {
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
+
+function removeIndicator(){
+    typingIndicator.classList.add('visibleNot');
+ }
+ function addIndicator (name){
+    typingIndicator.innerText = name +' typing'
+    typingIndicator.classList.remove('visibleNot');
+ }
+ function displayTyping(name){
+    
+    addIndicator(name);
+        setTimeout(()=>{
+            removeIndicator()
+        },2000);
+ }
+
+socket.on('userTyping', (data) => {
+    typeAudio.play();
+    displayTyping(data.name)
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+});
+
+
+// Delete all the files stored in the server - 
+
+function scheduleDailyTask(hour, minute, second, task) {
+    const now = new Date();
+    const targetTime = new Date();
+    targetTime.setHours(hour, minute, second, 0);
+
+    if (targetTime <= now) {
+        targetTime.setDate(targetTime.getDate() + 1); // If the target time has already passed today, schedule for the next day
+    }
+
+    const timeDiff = targetTime - now;
+
+    setTimeout(() => {
+        task(); // Execute the task when the specified time is reached
+        // Schedule the task for the next day
+        setInterval(task, 24 * 60 * 60 * 1000); // 24 hours in milliseconds
+    }, timeDiff);
+}
+
+function deleteAllServerFiles() {
+    const serverUrl = 'http://localhost:3000'; // Replace with the actual URL of your server
+    const deleteAllRoute = '/delete-all';
+
+    // Combine the server URL and the delete-all route
+    const deleteAllUrl = `${serverUrl}${deleteAllRoute}`;
+
+    // Send a GET request to the delete-all route
+    fetch('/deleteAll')
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text(); // Change to response.json() if the route sends JSON response
+        })
+        .then((data) => {
+            // Handle the response data here
+            console.log('Response data:', data);
+        })
+        .catch((error) => {
+            // Handle any errors that occurred during the fetch
+            console.error('Fetch error:', error);
+        });
+}
+
+scheduleDailyTask(23, 59, 0, deleteAllServerFiles);
+
 
 // window.addEventListener('beforeunload', function (e) {
 //     // Display a confirmation message when the user tries to reload the page

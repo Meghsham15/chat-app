@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Download File Example</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <link rel="stylesheet" href="css/styleNew.css">
-    <link rel="stylesheet" media="screen and (max-width: 582px)" href="css/phone.css">
-    <style>
-
-    </style>
 </head>
-
 <body>
     <div id="chat">
         <nav>
@@ -19,12 +13,7 @@
         </nav>
 
         <div class="container">
-            <!-- <div class="file-card" id="fileCard">
-                <span class="file-name" id="fileLabel">File Name</span>
-                <a href="#" id="downloadButton" class="download-button">
-                    ⭳
-                </a>
-            </div> -->
+            <article class="typing-indicator">user </article>
         </div>
         <div class="send">
             <form action='#' id="send-container">
@@ -32,77 +21,29 @@
                 <input type="text" id="messageInput" autocomplete="off" name="messageInput">
                 <emoji-picker class="displayNone" id="emoji-picker-button"></emoji-picker>
                 <label class="inputs-label" id="fileInputLabel" for="fileInput">📁</label>
-                <input type="file" accept="*" id="fileInput" class="fileInput" multiple hidden>
+                <input type="file"  accept="*" class='fileInput' id="fileInput" multiple hidden>
                 <label class="inputs-label" id="imageInputLabel" for="imageInput">📷</label>
                 <input type="file" id="imageInput" accept="image/*" hidden>
                 <button type='submit' id="submit" class="btn">➡️</button>
             </form>
         </div>
     </div>
-    <!-- <input type="file" id="fileInput"> -->
-    <!-- <div class="file-card" id="fileCard">
-        <span class="file-name" id="fileLabel">File Name</span>
-        <a href="#" id="downloadButton" class="download-button">
-            <i class="fas fa-arrow-down download-icon"></i> Download
-        </a>
-    </div> -->
-
-    <script>
-        const fileInput = document.getElementById('fileInput');
-        // const fileCard = document.getElementById('fileCard');
-        const fileLabel = document.getElementById('fileLabel');
-        const downloadButton = document.getElementById('downloadButton');
-        let chatContainer = document.querySelector('.container');
-
-        function appendFile(name, url, user, position) {
-            let fileCard = document.createElement('div');
-            let fileName = document.createElement('span');
-            let downloadBtn = document.createElement('a');
-            let nameEle = document.createElement('p');
-            nameEle.innerText = user + ' - ' + 'time';
-            fileCard.classList.add('file-card');
-            fileCard.classList.add(position);
-            fileName.classList.add('file-name');
-            downloadBtn.classList.add('download-button');
-            fileName.innerText = name;
-            downloadBtn.innerText = '⭳';
-            downloadBtn.setAttribute('href', url);
-            downloadBtn.setAttribute('download', name);
-            downloadBtn.setAttribute('id', 'downloadButton');
-            fileCard.append(fileName);
-            fileCard.append(downloadBtn);
-            fileCard.append(nameEle);
-            chatContainer.append(fileCard);
-        }
-
-        fileInput.addEventListener('change', async(e) => {
-            const formData = new FormData();
-            const fileInputs = document.querySelectorAll('.fileInput');
-            for (const input of fileInputs) {
-                Array.from(input.files).forEach((file) => {
-                    formData.append('files', file);
-                });
-            }
-
-            const response = await fetch('/upload', {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-            // console.log(data);
-            // const responseDiv = document.getElementById('response');
-            // responseDiv.innerHTML = '';
-
-            data.forEach((fileData, index) => {
-                // const downloadLink = document.createElement('a');
-                let url = `/uploads/${fileData.filename}`;
-                let fileName = fileData.originalname;
-                console.log(url);
-                appendFile(fileName,url,'trail','right');
-            });
-        });
-    </script>
 </body>
+<script>
+    document.querySelector('.typing-indicator').classList.add('displayNone');
+    function addIndicator(){
+        document.querySelector('.typing-indicator').classList.add('displayNone');
+    }
+    function removeIndicator(){
+        document.querySelector('.typing-indicator').classList.remove('displayNone');
+    }
+    document.getElementById('messageInput').addEventListener('input',(e)=>{
+        removeIndicator();
+        setTimeout(()=>{
+            addIndicator()
+        },1000);
+    });
 
+
+</script>
 </html>
