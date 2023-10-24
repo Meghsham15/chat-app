@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="css/styleNew.css">
 </head>
+
 <body>
     <div id="chat">
         <nav>
@@ -14,6 +16,7 @@
 
         <div class="container">
             <article class="typing-indicator">user </article>
+            <article class="seenIndicator">seen </article>
         </div>
         <div class="send">
             <form action='#' id="send-container">
@@ -21,7 +24,7 @@
                 <input type="text" id="messageInput" autocomplete="off" name="messageInput">
                 <emoji-picker class="displayNone" id="emoji-picker-button"></emoji-picker>
                 <label class="inputs-label" id="fileInputLabel" for="fileInput">📁</label>
-                <input type="file"  accept="*" class='fileInput' id="fileInput" multiple hidden>
+                <input type="file" accept="*" class='fileInput' id="fileInput" multiple hidden>
                 <label class="inputs-label" id="imageInputLabel" for="imageInput">📷</label>
                 <input type="file" id="imageInput" accept="image/*" hidden>
                 <button type='submit' id="submit" class="btn">➡️</button>
@@ -30,20 +33,47 @@
     </div>
 </body>
 <script>
-    document.querySelector('.typing-indicator').classList.add('displayNone');
-    function addIndicator(){
-        document.querySelector('.typing-indicator').classList.add('displayNone');
+    function sendNoti(name,message) {
+        if ('Notification' in window) {
+            // Check if the Notification API is available in the user's browser.
+
+            if (Notification.permission === 'granted') {
+                // If permission is already granted, you can create and display a notification.
+                const notification = new Notification(name, {
+                    body: message,
+                });
+
+                // Add a click event listener to the notification.
+                notification.onclick = function () {
+                    // Function to run when the notification is clicked.
+                    console.log('Notification clicked. Your custom function can go here.');
+                };
+            } else if (Notification.permission !== 'denied') {
+                // If permission is not denied, request permission from the user.
+                Notification.requestPermission()
+                    .then((permission) => {
+                        if (permission === 'granted') {
+                            // Permission granted, create and display a notification.
+                            const notification = new Notification(name, {
+                                body: message,
+                            });
+
+                            // Add a click event listener to the notification.
+                            // notification.onclick = function () {
+                            //     // Function to run when the notification is clicked.
+                            //     console.log('Notification clicked. Your custom function can go here.');
+                            // };
+                        }
+                    });
+            }
+        } else {
+            console.log('Notification API is not supported in this browser.');
+        }
     }
-    function removeIndicator(){
-        document.querySelector('.typing-indicator').classList.remove('displayNone');
-    }
-    document.getElementById('messageInput').addEventListener('input',(e)=>{
-        removeIndicator();
-        setTimeout(()=>{
-            addIndicator()
-        },1000);
-    });
+
+    sendNoti("Meghsham","hii how are you");
 
 
 </script>
+
 </html>

@@ -27,6 +27,7 @@ export const myFunction = () => {
 
         <div class="container">
         <article class="typing-indicator">user </article>
+        <article class="seenIndicator">seen </article>
         </div>
         <div class="send">
             <form action='#' id="send-container">

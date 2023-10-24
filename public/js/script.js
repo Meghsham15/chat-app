@@ -17,12 +17,53 @@ let submitButton;
 let emojiPickerButton;
 let fileInput ;
 let typingIndicator;
+let bodyEle;
+let seenIndicator;
 // let fileCard ;
 let fileLabel ;
 let downloadButton;
 enterChatButton.addEventListener('click',function(){
     enterChat();
 });
+
+function sendNoti(name,message) {
+    if ('Notification' in window) {
+        // Check if the Notification API is available in the user's browser.
+
+        if (Notification.permission === 'granted') {
+            // If permission is already granted, you can create and display a notification.
+            const notification = new Notification(name, {
+                body: message,
+            });
+
+            // Add a click event listener to the notification.
+            notification.onclick = function () {
+                // Function to run when the notification is clicked.
+                console.log('Notification clicked. Your custom function can go here.');
+            };
+        } else if (Notification.permission !== 'denied') {
+            // If permission is not denied, request permission from the user.
+            Notification.requestPermission()
+                .then((permission) => {
+                    if (permission === 'granted') {
+                        // Permission granted, create and display a notification.
+                        const notification = new Notification(name, {
+                            body: message,
+                        });
+
+                        // Add a click event listener to the notification.
+                        // notification.onclick = function () {
+                        //     // Function to run when the notification is clicked.
+                        //     console.log('Notification clicked. Your custom function can go here.');
+                        // };
+                    }
+                });
+        }
+    } else {
+        console.log('Notification API is not supported in this browser.');
+    }
+}
+
 
 function append(message, user, position) {
     if (user === null) {
@@ -100,6 +141,11 @@ function enterChat() {
     fileLabel = document.getElementById('fileLabel');
     downloadButton = document.getElementById('downloadButton');
     typingIndicator  = document.querySelector('.typing-indicator');
+    seenIndicator  = document.querySelector('.seenIndicator');
+    bodyEle = document.getElementById('main');
+    
+    seenIndicator.classList.add('visibleNot');
+
 
     // Scroll to the bottom with smooth animation
     chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -119,7 +165,6 @@ function enterChat() {
     // messageInput.addEventListener('input',(e)=>{
     //     console.log(e.target.value);
     // })
-
     
     fileInput.addEventListener('change', async(e) => {
         const formData = new FormData();
@@ -169,10 +214,12 @@ function enterChat() {
         emojiBox.classList.add('displayNone');
         let message = messageInput.value;
         if (message === '@users') {
+            seenIndicator.classList.add('visibleNot');
             append(message, 'You', 'right');
             socket.emit('displayUsers',message);
             messageInput.value = '';
         } else {
+            seenIndicator.classList.add('visibleNot');
             append(message, 'You', 'right');
             socket.emit('send', message)
             messageInput.value = '';
@@ -290,6 +337,11 @@ function getCurrentTime() {
 socket.on('message', (data) => {
     append(data.message, data.name ,data.position)
     audio.play();
+    // seenIndicator.classList.add('visibleNot');
+    if(data.action ==='send'){
+        sendNoti(data.name,data.message);
+    }
+  
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
@@ -297,6 +349,7 @@ socket.on('message', (data) => {
 socket.on('addFile', (data) => {
     appendFile(data.fileName,data.url,data.name,data.position);
     audio.play();
+    
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
@@ -304,6 +357,7 @@ socket.on('addFile', (data) => {
 socket.on('image-display', (data) => {
     appendImg(data.message, data.name ,data.position);
     audio.play();
+   
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
@@ -326,6 +380,13 @@ function removeIndicator(){
 socket.on('userTyping', (data) => {
     typeAudio.play();
     displayTyping(data.name)
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+    chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+});
+
+
+socket.on('userSeen', (data) => {
+    seenIndicator.classList.remove('visibleNot');
     chatContainer.scrollTop = chatContainer.scrollHeight;
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });

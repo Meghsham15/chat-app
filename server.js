@@ -167,7 +167,7 @@ io.on('connection', (socket) => {
     });
 
 
-    socket.on('send', (message) => {
+    socket.on('send', (message,ack) => {
         let user = getUser(users, socket.id);
         // users.forEach((ele) => {
         //     if (ele.id === socket.id) {
@@ -177,7 +177,8 @@ io.on('connection', (socket) => {
         // })
 
         // console.log(user);
-        socket.broadcast.to(user.room).emit('message', { users: users, position: 'left', message: message, name: user[socket.id] })
+        socket.broadcast.to(user.room).emit('message', {action:'send', users: users, position: 'left', message: message, name: user[socket.id] });        
+    
     })
 
     socket.on('send-img', (message) => {
@@ -212,6 +213,7 @@ io.on('connection', (socket) => {
         })
         // console.log(user);
         socket.emit('message', { users: users, position: 'center', message: JSON.stringify(names), name: null })
+    
     });
 
     socket.on('disconnect', () => {
@@ -249,6 +251,23 @@ io.on('connection', (socket) => {
             // io.to(user.room).emit('userTyping', { users: users, position: 'center', message: "User disconnected - " + user[socket.id], name: null });
 
             socket.broadcast.to(user.room).emit('userTyping', { users: users, name: user[socket.id] })
+        }
+    })
+
+    socket.on('seen', () => {
+        if (users.length !== 0) {
+            let user = getUser(users, socket.id);
+            // users.forEach((ele) => {
+            //     if (ele.id === socket.id) {
+            //         // console.log(ele);
+            //         user = ele;
+            //     }
+            // })
+            // console.log('disconnected' + user[socket.id]);
+            
+            // io.to(user.room).emit('userTyping', { users: users, position: 'center', message: "User disconnected - " + user[socket.id], name: null });
+
+            socket.broadcast.to(user.room).emit('userSeen', { users: users, name: user[socket.id] })
         }
     })
 

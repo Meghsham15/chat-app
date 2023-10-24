@@ -377,3 +377,11 @@ nav {
     top: -6%;
     height: 33px;
 }
+
+.seenIndicator {
+    background: white;
+    height: auto;
+    position: relative;
+    top: 88%;
+    font-size: 10px;
+}
