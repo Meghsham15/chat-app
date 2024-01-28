@@ -1,0 +1,32 @@
+:root{
+    --black:black;
+    --sky-blue:#006aff;
+    --light-gray:#f2f2f2;
+    --white:white;
+    --bg-blue:#cee7f3;
+    --gray:gray;
+    --background-none:none;
+    --nav-bg:#05526a;
+    --nav-items-bg:#498090;
+    --nav-font:black;
+
+    --nav-bg:url("https://cdn.cookielaw.org/logos/aa498dad-1691-4c3b-894a-906c990be323/eab8b6ff-57d6-438a-a7e5-c58dd370ce73/000d8b20-8c3d-4f4f-a0da-5b515f8f20d2/Square_combinationmark_black.png");
+    --home-img:url("https://images.ctfassets.net/2d5q1td6cyxq/5dsvrIFVd4ZX8512oZAoQy/fd01f4cd1c24909783b8b1dce3e7481f/PD03519_-_Base_USEN_HPQ3_resto_hero.png?w=2998&h=2541&fm=avif&q=85&fit=scale");
+    --card1-img:url("https://squareup.com/us/en/commerce");
+    --card2-img:url("https://squareup.com/us/en/customers");
+    --card3-img:url("https://squareup.com/us/en/banking");
+    --card4-img:url("https://squareup.com/us/en/staff");
+    --collage1-img:url("https://images.ctfassets.net/2d5q1td6cyxq/eNOTBoEdTxDuumUmwjV38/720c8b433f23bcf8dfdc8983637d5839/PD03116_-_M_USEN_large_business_v2.png?w=2015&h=2282&fm=avif&q=85&fit=scale");
+    --collage2-img:url("https://images.ctfassets.net/2d5q1td6cyxq/eNOTBoEdTxDuumUmwjV38/720c8b433f23bcf8dfdc8983637d5839/PD03116_-_M_USEN_large_business_v2.png?w=2015&h=2282&fm=avif&q=85&fit=scale");
+    --collage3-img:url("https://images.ctfassets.net/2d5q1td6cyxq/eNOTBoEdTxDuumUmwjV38/720c8b433f23bcf8dfdc8983637d5839/PD03116_-_M_USEN_large_business_v2.png?w=2015&h=2282&fm=avif&q=85&fit=scale");
+    --solo1-img:url("https://images.ctfassets.net/2d5q1td6cyxq/2D5uMcuHI19YhAOiHifBCT/d740dec800ca78eba49062ce3ce6ad26/PD04034_-_Base_US_HP_salon_hotspot.png?w=1431&h=908&fm=avif&q=85&fit=scale");
+    --solo12-img:url("https://images.ctfassets.net/2d5q1td6cyxq/6t57lHd0gyqnrIYePOl5eX/8c45ae9b254580d577f77b1ca1c39290/Intro0010_comp_USEN_v009.1060.jpg?w=2998&h=1349&fm=avif&q=85&fit=scale");
+    --bg-img1:url("https://squareup.com/us/en/hardware");
+    --bg-img2:url("https://squareup.com/us/en/hardware/terminal");
+    --bg-img3:url("https://squareup.com/us/en/hardware/stand-mount");
+    --contact-img:url("https://images.ctfassets.net/2d5q1td6cyxq/5DRtE0a8WLK74M0lt9kVkU/067a616417b8a297a85fe6d809235757/PD04033_-_base_USEN_HP_tap_to_pay.png?w=973&h=506&fm=avif&q=85&fit=scale");
+    --shop-img:url("https://images.ctfassets.net/2d5q1td6cyxq/5YeZRkGTVMZhWlKVFaMHbn/4607d088f78c757230d4b440ea87f993/photodom-prompt-large.jpg?w=973&h=1266&fm=avif&q=85&fit=scale");
+    --shop-img-s:url("https://images.ctfassets.net/2d5q1td6cyxq/1JUNKJOzIhZ310xvrYeA7c/9e99eba4ade61595cdc390d7e538a72d/shop-the-setup-photodom-thumbnail.jpg?w=973&h=729&fm=avif&q=85&fit=scale");
+
+
+}

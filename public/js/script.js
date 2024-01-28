@@ -6,10 +6,19 @@ let app = document.getElementById('app');
 app.innerHTML = myFunction().landing;
 const audio = new Audio('sound/Notification.mp3');
 const typeAudio = new Audio('sound/typing.mp3');
+document.addEventListener("DOMContentLoaded", function () {
+    // Hide preloader after 2 seconds (2000 milliseconds)
+    setTimeout(function () {
+        document.getElementById("loadingIndicator").style.display = "none";
+    }, 2000);
+});
 
 const socket = io(); // Initialize Socket.io
 // let socket ; // Initialize Socket.io
+let imgPop = document.getElementById('imgPop');
 let enterChatButton = document.getElementById('enterChat');
+let wideImg = document.querySelector('#imgPop img');
+
 let chatContainer;
 let form;
 let messageInput ;
@@ -22,8 +31,16 @@ let seenIndicator;
 // let fileCard ;
 let fileLabel ;
 let downloadButton;
-enterChatButton.addEventListener('click',function(){
+
+let cross = document.querySelector('#imgPop p');
+cross.addEventListener('click',function(){
+    imgPop.style.display='none';
+});
+enterChatButton.addEventListener('click',async function(){
+    document.getElementById('loadingIndicator').style.display = 'block';
     enterChat();
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    document.getElementById('loadingIndicator').style.display = 'none';
 });
 
 function sendNoti(name,message) {
@@ -87,6 +104,7 @@ function append(message, user, position) {
 
 function appendFile(name, url, user, position) {
     let fileCard = document.createElement('div');
+    let innerDiv = document.createElement('div');
     let fileName = document.createElement('span');
     let downloadBtn = document.createElement('a');
     let nameEle = document.createElement('p');
@@ -95,14 +113,19 @@ function appendFile(name, url, user, position) {
     fileCard.classList.add(position);
     fileName.classList.add('file-name');
     downloadBtn.classList.add('download-button');
+    innerDiv.classList.add('innerDiv');
     fileName.innerText = name;
     downloadBtn.innerText = '⭳';
     downloadBtn.setAttribute('href', url);
     downloadBtn.setAttribute('download', name);
     downloadBtn.setAttribute('id', 'downloadButton');
-    fileCard.append(fileName);
-    fileCard.append(downloadBtn);
-    fileCard.append(nameEle);
+    if(position==='right'){
+        innerDiv.style.background = 'lightsteelblue';
+    }
+    innerDiv.append(fileName);
+    innerDiv.append(downloadBtn);
+    innerDiv.append(nameEle);
+    fileCard.append(innerDiv);
     chatContainer.append(fileCard);
 };
 
@@ -117,6 +140,14 @@ function appendImg(url,user,position){
     messageEle.classList.add('message');
     messageEle.classList.add(position);
     chatContainer.append(messageEle);
+    let chatImg = document.querySelectorAll('.message img');
+    for(let i=0;i<chatImg.length;i++){
+        chatImg[i].addEventListener('click',function(){
+        let src = chatImg[i].src;
+        wideImg.setAttribute('src',src);
+        imgPop.style.display = 'flex';
+    });
+    }
 }
 
 function enterChat() {
@@ -181,16 +212,19 @@ function enterChat() {
         });
 
         const data = await response.json();
-        console.log(formData);
+        // console.log(formData);
         // const responseDiv = document.getElementById('response');
         // responseDiv.innerHTML = '';
 
-        data.forEach((fileData, index) => {
+        data.forEach(async (fileData, index) => {
             // const downloadLink = document.createElement('a');
             let url = `/uploads/${fileData.filename}`;
             let fileName = fileData.originalname;
+            document.getElementById('loadingIndicator').style.display = 'block';
             appendFile(fileName,url,'You','right');
             socket.emit('file',{fileName:fileName,url:url});
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            document.getElementById('loadingIndicator').style.display = 'none';
         });
     });
 
@@ -252,6 +286,7 @@ function enterChat() {
                     previewImg.src = e.target.result;
                     imgContainer.style.display = 'flex'
                     imgContainer.style.zIndex = '1';
+                    imgContainer.style.background = '#b0c4de73';
                     chat.classList.add('blur');
                     const img = new Image();
                     img.src = e.target.result;
@@ -295,8 +330,9 @@ function enterChat() {
         }
     );
 
-    imgContainer.addEventListener('submit', (e)=> {
+    imgContainer.addEventListener('submit', async (e)=> {
         e.preventDefault();
+        document.getElementById('loadingIndicator').style.display = 'block';
         appendImg(dataUrl,'You','right');
         imgContainer.style.display = 'none';
         imgContainer.style.zIndex = '-1';
@@ -304,6 +340,8 @@ function enterChat() {
         socket.emit('send-img',dataUrl);
         chatContainer.scrollTop = chatContainer.scrollHeight;
         chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        document.getElementById('loadingIndicator').style.display = 'none';
             
     });
 
@@ -346,7 +384,8 @@ socket.on('message', (data) => {
     chatContainer.scrollIntoView({ behavior: 'smooth', block: 'end' });
 });
 
-socket.on('addFile', (data) => {
+socket.on('addFile', async (data) => {  
+    // document.getElementById('loadingIndicator').style.display = 'block';
     appendFile(data.fileName,data.url,data.name,data.position);
     audio.play();
     

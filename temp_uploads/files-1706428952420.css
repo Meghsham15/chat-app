@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
+
+:root {
+    --border:0.5px;
+    --border-radius: 3vw;
+    --nav-font-size: 0.9rem;
+    --font-size-large: 5vw;
+    --font-size-medium: 2.5vw;
+    --font-size-h3: 2vw;
+    --font-size-a: 1.5vw;
+    --font-size-small: 1.2vw;
+    --mini-card-height: 200px;
+    --l-r-margin: 30px;
+    --spacing: 10px;
+    --temp-bp-spacing: calc(var(--spacing)*1.5);
+    --nav-width: 100vw;
+    --main-width: 100vw;
+    --nav-height: 30px;
+    --scroll-slider-height: 486px;
+    --nav-padding: 15px;
+    --button-padding: 0.8vw;
+    --button-margin-right: 2vw;
+    --nav-in-padding: 0.4vw;
+    --nav-li-margin: 1vw;
+    --width: 100vw;
+    --scrolling-card-w: 379px;
+    --percent-val: 100%;
+    --section-padding-y: 4.7vw;
+    --line-height-l: 7vw;
+    --padding: 2.5vw;
+    --card-padding: 2vw;
+    --section-padding-x: 2.5vw;
+    --p-word-spacing: 0.1vw;
+    --p-margin: 1vw;
+    --cards-margin: 2vw;
+    --negative-margin: -3vw;
+    --slider-inner-width: var(--percent-val);
+    --border: 1px;
+    --mini-card-img-w: 30%;
+    --mini-card-img-h: 100%;
+    --aside-img-h:600px;
+    --margin-bottom:5vw;
+    --margin-right:6vw;
+    --input-border-radius:1vw;
+    --input-padding:1.5vw;
+    --font-footer-small:0.8vw;
+    --footer-m:1.1vw;
+    --s-icon-w:1.5vw;
+    --logo-width-phone: 8vw;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border-radius: 3px;
+    box-sizing: border-box;
+    border: 0;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+
+main>section:nth-child(2) {
+    --section-padding-x: 0;
+}
+
+@media (max-width: 816px) {
+    :root {
+        --font-size-large: 11vw;
+        --logo-width-phone: 22vw;
+        --line-height-l: 10vw;
+        --font-size-small: 4.1vw;
+        --font-size-medium: 7vw;
+        --font-size-h3: 5vw;
+        --p-word-spacing: 0.1vw;
+        --p-margin: 1vw;
+        --p-margin: 4vw;
+        --cards-margin: 6vw;
+        --card-padding: 4vw;
+        --line-height-l: 15vw;
+        --h2-margin: 12vw;
+        --scroll-slider-card-height: 420px;
+        --slider-inner-width: 992px;
+        --mini-card-height: undefined;
+        --mini-card-img-w: 100%;
+        --mini-card-img-h: 140px;
+        --aside-img-h: 330px;
+        --input-padding:3vw;
+        --font-size-a: 3.5vw;
+        --h4-margin:2vw;
+        --s-icon-w: 5.5vw;
+
+    }
+}

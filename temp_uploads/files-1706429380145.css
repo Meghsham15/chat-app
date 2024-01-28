@@ -1,0 +1,60 @@
+:root {
+    --primary-blue: #05526a;
+    --secondary-blue: #498090;
+    --light-blue: #0989b1;
+    --link-blue: #006aff;
+    --blue-background:#cee7f3;
+    --beige: beige;
+    --white:gray;
+    --bg-none:gray;
+    --primary-color: gray;
+    --image-background: gray;
+    --light-gray: rgb(242 242 242);
+    --black: black;
+    --input-background:gray;
+    --cards-shadow:0px 0px 12px 0px grey;
+
+
+
+    --nav-logo:url("https://cdn.cookielaw.org/logos/aa498dad-1691-4c3b-894a-906c990be323/eab8b6ff-57d6-438a-a7e5-c58dd370ce73/000d8b20-8c3d-4f4f-a0da-5b515f8f20d2/Square_combinationmark_black.png") no-repeat center center/cover;
+    --black:black;
+    --footer-bg:black;
+    --sky-blue:#006aff;
+    --button-bg-gray:#f2f2f2;
+    --light-gray:#f2f2f2;
+    --white:white;
+    --bg-blue:#cee7f3;
+    --gray:gray;
+    --bg-none:none;
+    --nav-bg:white;
+    --nav-items-bg:none;
+    --nav-font:black;
+    --cards-bg:white;
+    --cards-bg-gray:#f2f2f2;
+    --font-gray:#b3b3b3;
+
+
+    /* img  */
+    --home-img: url("https://images.ctfassets.net/2d5q1td6cyxq/4Uyb3lpfXMa1hUNaPofDsQ/4aac2f389cb2dcc148fea68d6584dd27/PD03519_-_Base_USEN_fluid_hero_bakery_4000px.png?w=2998&h=2541&fm=avif&q=85&fit=scale") no-repeat center center/cover ;
+
+
+    --card1-img:url("https://images.ctfassets.net/2d5q1td6cyxq/3iFaJmhx6GKbn4CeN8jZPm/f3cd0bd7b8d2330029cece51ca9667fb/USEN_salon_omnichannel-commerce.jpeg?w=1200&h=630&fm=jpg&q=90&fit=thumb") no-repeat center center/cover;
+
+    --card2-img:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR6IoetFkUzCujaXHflwagZTJdXZHt-cgEd8J2VhfNN6f1igzsqX5z1Pa6vcvYcIgtrsV4&usqp=CAU") no-repeat center center/cover;
+
+    --card3-img:url("https://images.ctfassets.net/2d5q1td6cyxq/3iFaJmhx6GKbn4CeN8jZPm/f3cd0bd7b8d2330029cece51ca9667fb/USEN_salon_omnichannel-commerce.jpeg?w=1200&h=630&fm=jpg&q=90&fit=thumb") no-repeat center center/cover;
+
+    --card4-img:url("https://images.ctfassets.net/2d5q1td6cyxq/3iFaJmhx6GKbn4CeN8jZPm/f3cd0bd7b8d2330029cece51ca9667fb/USEN_salon_omnichannel-commerce.jpeg?w=1200&h=630&fm=jpg&q=90&fit=thumb") no-repeat center center/cover;
+
+    --imagine-img: url("https://images.ctfassets.net/2d5q1td6cyxq/42U3hZJToUUGCvgT6eGOXQ/a0b47e218590dd500f8aa7e010d28982/PD04034_-_L_US_HP_salon_hotspot.png?w=2998&h=1145&fm=avif&q=85&fit=scale")no-repeat cover center/cover;
+
+    --sol-img:url("https://images.ctfassets.net/2d5q1td6cyxq/eNOTBoEdTxDuumUmwjV38/720c8b433f23bcf8dfdc8983637d5839/PD03116_-_M_USEN_large_business_v2.png?w=2015&h=2282&fm=avif&q=85&fit=scale") no-repeat center center/cover;
+
+    --meet-img:url("https://images.ctfassets.net/2d5q1td6cyxq/6t57lHd0gyqnrIYePOl5eX/8c45ae9b254580d577f77b1ca1c39290/Intro0010_comp_USEN_v009.1060.jpg?w=2998&h=1349&fm=avif&q=85&fit=scale")no-repeat center center/cover;
+
+    --mini-card-img: url("https://images.ctfassets.net/2d5q1td6cyxq/5DRtE0a8WLK74M0lt9kVkU/067a616417b8a297a85fe6d809235757/PD04033_-_base_USEN_HP_tap_to_pay.png?w=973&h=506&fm=avif&q=85&fit=scale")no-repeat center center/cover;
+
+    --setup-img: url("https://images.ctfassets.net/2d5q1td6cyxq/1JUNKJOzIhZ310xvrYeA7c/9e99eba4ade61595cdc390d7e538a72d/shop-the-setup-photodom-thumbnail.jpg?w=973&h=729&fm=avif&q=85&fit=scale")no-repeat center center/cover;
+    
+}
+
