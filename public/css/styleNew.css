@@ -22,6 +22,22 @@
     display: none;
 }
 
+#imgContainer p{
+    font-size: 40px;
+    width: 3%;
+    position: relative;
+    left: 340px;
+    cursor: pointer;
+}
+
+#vidContainer p{
+    font-size: 40px;
+    width: 3%;
+    position: relative;
+    left: 340px;
+    cursor: pointer;
+}
+
 #imgPop img{
     width: 50%;
     margin-right: 25px;
@@ -36,6 +52,7 @@
 #imgPop p:hover{
     filter: blur(1px);
 }
+
 
 .image-container {
     backdrop-filter: blur(10px);
@@ -320,7 +337,30 @@ body {
     align-items: center;
     flex-direction: column;
 }
+.vidContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    z-index: -1;
+    height: 100vh;
+    display: none;
+    /* justify-content: center; */
+    align-items: center;
+    flex-direction: column;
+}
 
+#vidContainer video {
+    height: 65%;
+    width: 65%;
+    object-fit: contain;
+}
+
+#vidSend {
+    padding: 5px 10px;
+    margin: 10px;
+    cursor: pointer;
+}
 #imgContainer img {
     height: 65%;
     width: 65%;

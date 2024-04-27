@@ -14,6 +14,7 @@ export const myFunction = () => {
         chat: `
         <div >
         <form id="imgContainer" class="imgContainer" id='imgForm' action='#' >
+        <p>&#10683;</p>
         <img src="" alt="" id="previewImg">
         <button type='submit' id="imgSend">Send</button>
         </form>

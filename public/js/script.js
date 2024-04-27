@@ -268,12 +268,17 @@ function enterChat() {
     // img Operation - 
     const imageInput = document.getElementById('imageInput');
     let imgContainer = document.getElementById('imgContainer');
+    let imgCross = document.querySelector("#imgContainer p");
     const canvas = document.getElementById('canvas');
     const targetSizeInBytes = 100 * 1024; // Target size in bytes (100KB)
     // let imgSend = document.getElementById('imgSend');
     // let imgForm = document.getElementById('imgForm');
     let dataUrl;
     let chat = document.getElementById('chat');
+    imgCross.addEventListener('click',function(){
+        imgContainer.style.display = 'none';
+        chat.classList.remove('blur');
+    });
        // Listen for changes in the file input
     imageInput.addEventListener('change', function () {
         const file = imageInput.files[0];
@@ -477,6 +482,7 @@ function deleteAllServerFiles() {
 }
 
 scheduleDailyTask(23, 59, 0, deleteAllServerFiles);
+// deleteAllServerFiles();
 
 
 // window.addEventListener('beforeunload', function (e) {
